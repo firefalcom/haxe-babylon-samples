@@ -19,6 +19,41 @@ class Launcher{
         engine = new BABYLON.Engine(cast canvas, true);
 
         engine.runRenderLoop(update);
+
+        BABYLON.SceneLoader.ShowLoadingScreen = false;
+        engine.displayLoadingUI();
+
+        js.Browser.window.setTimeout(function () {
+            scene = createScene();
+
+            if (scene.activeCamera != null) {
+                scene.activeCamera.attachControl(canvas, false);
+            }
+
+            scene.executeWhenReady(function () {
+                canvas.style.opacity = "1";
+                engine.hideLoadingUI();
+                BABYLON.SceneLoader.ShowLoadingScreen = true;
+                /*if (then) {
+                    then(scene);
+                }*/
+
+                /*
+                for ( index in 0...scene.cameras.length) {
+                    var camera = scene.cameras[index];
+                    var option = new Option();
+                    option.text = camera.name;
+                    option.value = camera;
+
+                    if (camera === scene.activeCamera) {
+                        option.selected = true;
+                    }
+
+                    camerasList.appendChild(option);
+                }
+                */
+            });
+        }, 15);
     }
 
     private function createScene():BABYLON.Scene{
@@ -28,11 +63,6 @@ class Launcher{
     public function update(){
         if( scene != null ){
             scene.render();
-        } else {
-            scene = createScene();
-            if (scene.activeCamera != null) {
-                scene.activeCamera.attachControl(canvas, false);
-            }
         }
     }
 
