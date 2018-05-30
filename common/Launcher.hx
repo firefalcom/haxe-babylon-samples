@@ -7,16 +7,18 @@ class Launcher{
     public var canvas:js.html.CanvasElement;
     public var scene : BABYLON.Scene = null;
 
-    public function new(?width:Int = 800, ?height:Int = 600, ?parent:String = "body") {
-        canvas = js.Browser.document.createCanvasElement();
-        js.Browser.document.querySelector(parent).appendChild(canvas);
-        canvas.width = width;
-        canvas.height = height;
-        canvas.style.width = width+"px";
-        canvas.style.height = height+"px";
-        canvas.style.zIndex = "-1";
-        canvas.style.position = "absolute";
+    var divFps : js.html.Element;
+    var status : js.html.Element;
+
+
+    var sceneChecked = false;
+
+    public function new(?width:Int = 800, ?height:Int = 600) {
+        canvas = cast js.Browser.document.getElementById("renderCanvas");
         engine = new BABYLON.Engine(cast canvas, true);
+
+        divFps = js.Browser.document.getElementById("fps");
+        status = js.Browser.document.getElementById("status");
 
         engine.runRenderLoop(update);
 
@@ -64,6 +66,35 @@ class Launcher{
         if( scene != null ){
             scene.render();
         }
+
+        if (divFps != null) {
+            divFps.innerHTML = engine.getFps() + " fps";
+        }
+
+        if (scene != null) {
+            if (!sceneChecked) {
+                var remaining = scene.getWaitingItemsCount();
+                engine.loadingUIText = "Streaming items..." + (remaining > 0 ? (remaining + " remaining") : "");
+
+                if (remaining == 0) {
+                    sceneChecked = true;
+                }
+            }
+
+            if (scene.activeCamera != null) {
+                scene.render();
+            }
+
+            // Streams
+            if (scene.useDelayedTextureLoading) {
+                var waiting = scene.getWaitingItemsCount();
+                if (waiting > 0) {
+                    status.innerHTML = "Streaming items..." + waiting + " remaining";
+                } else {
+                    status.innerHTML = "";
+                }
+            }
+        }
     }
 
 }
@@ -75,7 +106,6 @@ var canvas = document.getElementById("renderCanvas");
 // UI
 var controlPanel = document.getElementById("controlPanel");
 var cameraPanel = document.getElementById("cameraPanel");
-var divFps = document.getElementById("fps");
 var aboutPanel = document.getElementById("aboutPanel");
 var enableDebug = document.getElementById("enableDebug");
 var status = document.getElementById("status");
@@ -100,77 +130,6 @@ var engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, ste
 var scene;
 
 var previousPickedMesh;
-
-var loadCustomScene = function (demoConstructor, then) {
-    BABYLON.SceneLoader.ShowLoadingScreen = false;
-    engine.displayLoadingUI();
-
-    setTimeout(function () {
-        scene = demoConstructor(engine);
-
-        if (scene.activeCamera) {
-            scene.activeCamera.attachControl(canvas, false);
-        }
-
-        scene.executeWhenReady(function () {
-            canvas.style.opacity = 1;
-            engine.hideLoadingUI();
-            BABYLON.SceneLoader.ShowLoadingScreen = true;
-            if (then) {
-                then(scene);
-            }
-
-            for (var index = 0; index < scene.cameras.length; index++) {
-                var camera = scene.cameras[index];
-                var option = new Option();
-                option.text = camera.name;
-                option.value = camera;
-
-                if (camera === scene.activeCamera) {
-                    option.selected = true;
-                }
-
-                camerasList.appendChild(option);
-            }
-        });
-    }, 15);
-
-    return;
-};
-
-// Render loop
-var renderFunction = function () {
-    // Fps
-    if (divFps) {
-        divFps.innerHTML = engine.getFps().toFixed() + " fps";
-    }
-
-    // Render scene
-    if (scene) {
-        if (!sceneChecked) {
-            var remaining = scene.getWaitingItemsCount();
-            engine.loadingUIText = "Streaming items..." + (remaining ? (remaining + " remaining") : "");
-
-            if (remaining === 0) {
-                sceneChecked = true;
-            }
-        }
-
-        if (scene.activeCamera) {
-            scene.render();
-        }
-
-        // Streams
-        if (scene.useDelayedTextureLoading) {
-            var waiting = scene.getWaitingItemsCount();
-            if (waiting > 0) {
-                status.innerHTML = "Streaming items..." + waiting + " remaining";
-            } else {
-                status.innerHTML = "";
-            }
-        }
-    }
-};
 
 // Launch render loop
 engine.runRenderLoop(renderFunction);
@@ -401,10 +360,5 @@ if (document.getElementById("clickableTag")) {
         }
     });
 }
-// Check support
-if (!BABYLON.Engine.isSupported()) {
-    document.getElementById("notSupported").className = "";
-} else {
-    loadCustomScene(demo.constructor, demo.onload);
-};
+
 */
