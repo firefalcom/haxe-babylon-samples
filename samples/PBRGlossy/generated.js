@@ -588,7 +588,6 @@ PBRGlossy.prototype = $extend(Launcher.prototype,{
 		var hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("../../assets/environment.dds",scene);
 		hdrTexture.gammaSpace = false;
 		BABYLON.SceneLoader.Append("../../assets/DamagedHelmet/glTF/","DamagedHelmet.gltf",scene,function(scene1) {
-			scene1.createDefaultCameraOrLight(true,true,true);
 			scene1.createDefaultSkybox(hdrTexture,true,100,0.3);
 			var camera = scene1.activeCamera;
 			camera.lowerRadiusLimit = 2;
