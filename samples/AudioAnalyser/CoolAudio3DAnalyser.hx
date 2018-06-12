@@ -27,7 +27,7 @@ class CoolAudio3DAnalyser extends Launcher {
         // Create a really cool metal material with bump :)
         var m1 = new BABYLON.StandardMaterial("m", scene);
         m1.diffuseTexture = new BABYLON.Texture(square, scene);
-        m1.bumpTexture = new BABYLON.Texture("/demos/AudioAnalyser/grained_uv.png", scene);
+        m1.bumpTexture = new BABYLON.Texture("grained_uv.png", scene);
         m1.reflectionTexture = new BABYLON.Texture(bjs, scene);
         m1.reflectionTexture.level = 0.8;
         m1.reflectionTexture.coordinatesMode = BABYLON.Texture.SPHERICAL_MODE;
