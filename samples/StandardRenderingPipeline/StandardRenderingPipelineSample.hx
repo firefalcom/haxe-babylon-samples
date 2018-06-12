@@ -16,7 +16,7 @@ class StandardRenderingPipelineSample extends Launcher {
         new BABYLON.PointLight("point", new BABYLON.Vector3(0, 40, 0), scene);
 
         // Environment Texture
-        var hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("/assets/environment.dds", scene);
+        var hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("../../assets/environment.dds", scene);
 
         // Skybox
         var hdrSkybox = BABYLON.Mesh.CreateBox("hdrSkyBox", 1000.0, scene);
@@ -43,18 +43,18 @@ class StandardRenderingPipelineSample extends Launcher {
         wood.cameraExposure = 0.9;
         wood.cameraContrast = 1.6;
 
-        wood.reflectivityTexture = new BABYLON.Texture("/assets/reflectivity.png", scene);
+        wood.reflectivityTexture = new BABYLON.Texture("../../assets/reflectivity.png", scene);
         wood.useMicroSurfaceFromReflectivityMapAlpha = true;
 
         wood.albedoColor = BABYLON.Color3.White();
-        wood.albedoTexture = new BABYLON.Texture("/assets/albedo.png", scene);
+        wood.albedoTexture = new BABYLON.Texture("../../assets/albedo.png", scene);
         woodPlank.material = wood;
 
         // Create rendering pipeline
         var pipeline = new BABYLON.StandardRenderingPipeline("standard", scene, 1.0, null, [camera]);
-        pipeline.lensTexture = pipeline.lensFlareDirtTexture = new BABYLON.Texture("/assets/lensdirt.jpg", scene);
-        pipeline.lensStarTexture = new BABYLON.Texture("/assets/lensstar.png", scene);
-        pipeline.lensColorTexture = new BABYLON.Texture("/assets/lenscolor.png", scene);
+        pipeline.lensTexture = pipeline.lensFlareDirtTexture = new BABYLON.Texture("../../assets/lensdirt.jpg", scene);
+        pipeline.lensStarTexture = new BABYLON.Texture("../../assets/lensstar.png", scene);
+        pipeline.lensColorTexture = new BABYLON.Texture("../../assets/lenscolor.png", scene);
         pipeline.lensFlareDistortionStrength = 35;
         pipeline.depthOfFieldDistance = 0.002;
         pipeline.depthOfFieldBlurWidth = 32;
