@@ -592,7 +592,7 @@ Bones101.prototype = $extend(Launcher.prototype,{
 		ground.material = groundMaterial;
 		ground.receiveShadows = true;
 		var shadowGenerator = new BABYLON.ShadowGenerator(1024,light);
-		BABYLON.SceneLoader.ImportMesh("Rabbit","/scenes/","Rabbit.babylon",scene,function(newMeshes,particleSystems,skeletons,_) {
+		BABYLON.SceneLoader.ImportMesh("Rabbit","../../assets/Rabbit/","Rabbit.babylon",scene,function(newMeshes,particleSystems,skeletons,_) {
 			var rabbit = newMeshes[1];
 			rabbit.scaling = new BABYLON.Vector3(0.4,0.4,0.4);
 			shadowGenerator.getShadowMap().renderList.push(rabbit);
@@ -607,7 +607,7 @@ Bones101.prototype = $extend(Launcher.prototype,{
 			scene.beginAnimation(skeletons[0],0,100,true,0.8);
 			scene.beginAnimation(rabbit2.skeleton,73,100,true,0.8);
 			scene.beginAnimation(rabbit3.skeleton,0,72,true,0.8);
-			BABYLON.SceneLoader.ImportMesh("him","/scenes/Dude/","Dude.babylon",scene,function(newMeshes2,particleSystems2,skeletons2,_1) {
+			BABYLON.SceneLoader.ImportMesh("him","../../assets/Dude/","dude.babylon",scene,function(newMeshes2,particleSystems2,skeletons2,_1) {
 				var dude = newMeshes2[0];
 				var _g1 = 0;
 				var _g = newMeshes2.length;

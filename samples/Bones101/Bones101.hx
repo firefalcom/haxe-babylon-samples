@@ -23,7 +23,7 @@ class Bones101 extends Launcher {
         // Shadows
         var shadowGenerator = new BABYLON.ShadowGenerator(1024, light);
         // Meshes
-        BABYLON.SceneLoader.ImportMesh("Rabbit", "/scenes/", "Rabbit.babylon", scene, function(newMeshes, particleSystems, skeletons, _) {
+        BABYLON.SceneLoader.ImportMesh("Rabbit", "../../assets/Rabbit/", "Rabbit.babylon", scene, function(newMeshes, particleSystems, skeletons, _) {
             var rabbit:BABYLON.Mesh = cast newMeshes[1];
             rabbit.scaling = new BABYLON.Vector3(0.4, 0.4, 0.4);
             shadowGenerator.getShadowMap().renderList.push(rabbit);
@@ -39,7 +39,7 @@ class Bones101 extends Launcher {
             scene.beginAnimation(rabbit2.skeleton, 73, 100, true, 0.8);
             scene.beginAnimation(rabbit3.skeleton, 0, 72, true, 0.8);
             // Dude
-            BABYLON.SceneLoader.ImportMesh("him", "/scenes/Dude/", "Dude.babylon", scene, function(newMeshes2, particleSystems2, skeletons2, _) {
+            BABYLON.SceneLoader.ImportMesh("him", "../../assets/Dude/", "dude.babylon", scene, function(newMeshes2, particleSystems2, skeletons2, _) {
                 var dude:BABYLON.Mesh = cast newMeshes2[0];
                 for(index in 0...newMeshes2.length) {
                     shadowGenerator.getShadowMap().renderList.push(newMeshes2[index]);
