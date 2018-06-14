@@ -567,90 +567,62 @@ Launcher.prototype = {
 	}
 	,__class__: Launcher
 };
-var CoolAudio3DAnalyser = function(width,height) {
-	this.bjs = "metal.png";
-	this.square = "square.jpg";
-	this.bar = [];
+var Bones101 = function(width,height) {
 	Launcher.call(this,width,height);
 };
-CoolAudio3DAnalyser.__name__ = true;
-CoolAudio3DAnalyser.main = function() {
-	new CoolAudio3DAnalyser();
+Bones101.__name__ = true;
+Bones101.main = function() {
+	new Bones101();
 };
-CoolAudio3DAnalyser.rnd = function(min,max) {
-	return Math.floor(Math.random() * (max - min + 1) + min);
-};
-CoolAudio3DAnalyser.__super__ = Launcher;
-CoolAudio3DAnalyser.prototype = $extend(Launcher.prototype,{
-	createRingcubes: function(r,nb,scene) {
-		var TWO_PI = Math.PI * 2;
-		var angle = TWO_PI / nb;
-		var cube;
-		var m1 = new BABYLON.StandardMaterial("m",scene);
-		m1.diffuseTexture = new BABYLON.Texture(this.square,scene);
-		m1.bumpTexture = new BABYLON.Texture("grained_uv.png",scene);
-		m1.reflectionTexture = new BABYLON.Texture(this.bjs,scene);
-		m1.reflectionTexture.level = 0.8;
-		m1.reflectionTexture.coordinatesMode = BABYLON.Texture.SPHERICAL_MODE;
-		var _g1 = 0;
-		var _g = nb;
-		while(_g1 < _g) {
-			var i = _g1++;
-			if(i == 0) {
-				this.bar[i] = BABYLON.Mesh.CreateBox("b",0.02,scene);
-				this.bar[i].material = m1;
-				this.bar[i].isVisible = false;
-			} else {
-				this.bar[i] = this.bar[0].createInstance("b" + i);
-				this.bar[i].position.x = r * Math.sin(angle * i);
-				this.bar[i].position.y = r * Math.cos(angle * i);
-				this.bar[i].position.z = 0;
-				this.bar[i].scaling.y = 20.0;
-				this.bar[i].scaling.x = 200.0;
-				this.bar[i].lookAt(new BABYLON.Vector3(0,0,0));
-			}
-		}
-	}
-	,createScene: function() {
-		var _gthis = this;
+Bones101.__super__ = Launcher;
+Bones101.prototype = $extend(Launcher.prototype,{
+	createScene: function() {
 		var scene = new BABYLON.Scene(this.engine);
-		scene.clearColor = BABYLON.Color3.Black().toColor4(1);
-		var camera = new BABYLON.ArcRotateCamera("Camera",0,Math.PI / 2,25,BABYLON.Vector3.Zero(),scene);
-		var tmp = BABYLON.Vector3.Zero();
-		camera.setTarget(tmp);
+		var light = new BABYLON.DirectionalLight("dir01",new BABYLON.Vector3(0,-0.5,-1.0),scene);
+		var camera = new BABYLON.ArcRotateCamera("Camera",0,0,10,new BABYLON.Vector3(0,30,0),scene);
+		camera.setPosition(new BABYLON.Vector3(20,70,120));
+		light.position = new BABYLON.Vector3(20,150,70);
+		camera.minZ = 10.0;
 		camera.attachControl(this.canvas,true);
-		var light = new BABYLON.HemisphericLight("light1",new BABYLON.Vector3(0,1,0),scene);
-		var music = new BABYLON.Sound("Music","cosmosis.mp3",scene,null,{ streaming : true, autoplay : true});
-		this.createRingcubes(20,256,scene);
-		var mball = new BABYLON.StandardMaterial("m",scene);
-		mball.backFaceCulling = false;
-		mball.bumpTexture = new BABYLON.Texture("grained_uv.png",scene);
-		mball.reflectionTexture = new BABYLON.Texture(this.bjs,scene);
-		mball.reflectionTexture.level = 0.8;
-		mball.reflectionTexture.coordinatesMode = BABYLON.Texture.SPHERICAL_MODE;
-		var sphere = BABYLON.Mesh.CreateSphere("s",32,20,scene);
-		sphere.material = mball;
-		var myAnalyser = new BABYLON.Analyser(scene);
-		BABYLON.Engine.audioEngine.connectToAnalyser(myAnalyser);
-		myAnalyser.FFT_SIZE = 512;
-		myAnalyser.SMOOTHING = 0.9;
-		var t = 0.0;
-		scene.registerBeforeRender(function() {
-			var fft = myAnalyser.getByteFrequencyData();
-			var _g1 = 0;
-			var _g = _gthis.bar.length;
-			while(_g1 < _g) {
-				var i = _g1++;
-				_gthis.bar[i].scaling.z = fft[i] * 4;
-			}
-			camera.alpha = 4.0 * (Math.PI / 20 + Math.cos(t / 35));
-			camera.beta = 1.5 * (Math.PI / 20 + Math.sin(t / 50));
-			camera.radius = 100 + (-25 + 25 * Math.sin(t / 30));
-			t += 0.1;
+		scene.ambientColor = new BABYLON.Color3(0.3,0.3,0.3);
+		var ground = BABYLON.Mesh.CreateGround("ground",1000,1000,1,scene,false);
+		var groundMaterial = new BABYLON.StandardMaterial("ground",scene);
+		groundMaterial.diffuseColor = new BABYLON.Color3(0.2,0.2,0.2);
+		groundMaterial.specularColor = new BABYLON.Color3(0,0,0);
+		ground.material = groundMaterial;
+		ground.receiveShadows = true;
+		var shadowGenerator = new BABYLON.ShadowGenerator(1024,light);
+		BABYLON.SceneLoader.ImportMesh("Rabbit","../../assets/Rabbit/","Rabbit.babylon",scene,function(newMeshes,particleSystems,skeletons,_) {
+			var rabbit = newMeshes[1];
+			rabbit.scaling = new BABYLON.Vector3(0.4,0.4,0.4);
+			shadowGenerator.getShadowMap().renderList.push(rabbit);
+			var rabbit2 = rabbit.clone("rabbit2",null);
+			var rabbit3 = rabbit.clone("rabbit2",null);
+			shadowGenerator.getShadowMap().renderList.push(rabbit2);
+			shadowGenerator.getShadowMap().renderList.push(rabbit3);
+			rabbit2.position = new BABYLON.Vector3(-50,0,-20);
+			rabbit2.skeleton = rabbit.skeleton.clone("clonedSkeleton","");
+			rabbit3.position = new BABYLON.Vector3(50,0,-20);
+			rabbit3.skeleton = rabbit.skeleton.clone("clonedSkeleton2","");
+			scene.beginAnimation(skeletons[0],0,100,true,0.8);
+			scene.beginAnimation(rabbit2.skeleton,73,100,true,0.8);
+			scene.beginAnimation(rabbit3.skeleton,0,72,true,0.8);
+			BABYLON.SceneLoader.ImportMesh("him","../../assets/Dude/","dude.babylon",scene,function(newMeshes2,particleSystems2,skeletons2,_1) {
+				var dude = newMeshes2[0];
+				var _g1 = 0;
+				var _g = newMeshes2.length;
+				while(_g1 < _g) {
+					var index = _g1++;
+					shadowGenerator.getShadowMap().renderList.push(newMeshes2[index]);
+				}
+				dude.rotation.y = Math.PI;
+				dude.position = new BABYLON.Vector3(0,0,-80);
+				scene.beginAnimation(skeletons2[0],0,100,true,1.0);
+			});
 		});
 		return scene;
 	}
-	,__class__: CoolAudio3DAnalyser
+	,__class__: Bones101
 });
 Math.__name__ = true;
 var Std = function() { };
@@ -1121,5 +1093,5 @@ var Uint8Array = $global.Uint8Array || js_html_compat_Uint8Array._new;
 js_Boot.__toStr = ({ }).toString;
 js_html_compat_Float32Array.BYTES_PER_ELEMENT = 4;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
-CoolAudio3DAnalyser.main();
+Bones101.main();
 })(typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
