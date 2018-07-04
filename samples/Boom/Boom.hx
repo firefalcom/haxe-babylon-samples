@@ -197,7 +197,7 @@ class Boom extends Launcher {
     var ground = BABYLON.MeshBuilder.CreateGroundFromHeightMap("ground", "../../assets/heightMap.png", cast options, scene);
     var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
     var diffuseTexture : BABYLON.Texture;
-    groundMaterial.diffuseTexture = diffuseTexture = new BABYLON.Texture("../../assets/ground.jpg", scene);
+    groundMaterial.diffuseTexture = diffuseTexture = new BABYLON.Texture("../../assets/Ground.jpg", scene);
     diffuseTexture.uScale = 6;
     diffuseTexture.vScale = 6;
     groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -216,7 +216,7 @@ class Boom extends Launcher {
     disc.rotation.x = Math.PI / 2;
     var groundMaterial2 = new BABYLON.StandardMaterial("ground", scene);
     var diffuseTexture : BABYLON.Texture;
-    groundMaterial2.diffuseTexture = diffuseTexture = new BABYLON.Texture("../../assets/ground.jpg", scene);
+    groundMaterial2.diffuseTexture = diffuseTexture = new BABYLON.Texture("../../assets/Ground.jpg", scene);
     diffuseTexture.uScale = 50;
     diffuseTexture.vScale = 50;
     groundMaterial2.specularColor = new BABYLON.Color3(0, 0, 0);
