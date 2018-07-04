@@ -1,0 +1,6 @@
+-js generated.js
+-cp .
+-cp ../../common
+-lib babylon
+-main Boom
+
