@@ -216,7 +216,7 @@ class Boom extends Launcher {
     disc.rotation.x = Math.PI / 2;
     var groundMaterial2 = new BABYLON.StandardMaterial("ground", scene);
     var diffuseTexture : BABYLON.Texture;
-    groundMaterial2.diffuseTexture = diffuseTexture = new BABYLON.Texture("/assets/ground.jpg", scene);
+    groundMaterial2.diffuseTexture = diffuseTexture = new BABYLON.Texture("../../assets/ground.jpg", scene);
     diffuseTexture.uScale = 50;
     diffuseTexture.vScale = 50;
     groundMaterial2.specularColor = new BABYLON.Color3(0, 0, 0);
