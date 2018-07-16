@@ -23,7 +23,7 @@ class AdvancedShadows extends Launcher {
         var ground14 = BABYLON.Mesh.CreateGround("Directional Blur ESM", 24, 60, 1, scene, false);
 
         var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
-        groundMaterial.diffuseTexture = new BABYLON.Texture("/assets/ground.jpg", scene);
+        groundMaterial.diffuseTexture = new BABYLON.Texture("../../assets/ground.jpg", scene);
         groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
         groundMaterial.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
 
